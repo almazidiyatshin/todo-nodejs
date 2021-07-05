@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="/index.css">
+  <title>ToDo App</title>
+</head>
+<body>
+  <div class="container">
+    <h1>ToDo App</h1>
+      {{#if data.length}}
+        <ul id="todo-list">
+          {{#each data}}
+            <li class="todo">
+
+              <form>
+                <label>
+                  {{#if completed}}
+                    <input type="checkbox" checked>
+                    <span class="completed">{{title}}</span>
+                  {{else}}
+                    <input type="checkbox">
+                    <span>{{title}}</span>
+                  {{/if}}
+                  <div>
+                    <button
+                      class="btn btn-small complete"
+                      value={{id}}
+                    >
+                    {{#if completed}}
+                      Not complete
+                    {{else}}
+                      Complete
+                    {{/if}}
+                    </button>
+                    <button
+                      class="btn btn-small blue darken-2 modal-trigger change"
+                      data-target="modal{{id}}"
+                      value={{id}}
+                    >
+                      Change
+                    </button>
+                    <button
+                      class="btn btn-small red darken-2 delete"
+                      value={{id}}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </label>
+              </form>
+
+              <div id="modal{{id}}" class="modal">
+                <div class="modal-content">
+                  <h3>Change task</h3>
+                  <div class="row">
+                    <form action="/change/{{id}}" method="POST" class="col s12">
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <textarea class="materialize-textarea" name="title">{{title}}</textarea>
+                          <button
+                            type="submit"
+                            class="btn"
+                          >
+                          Update task
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p>No todos</p>
+      {{/if}}
+
+      <form action="/create" method="POST">
+        <h3>Create ToDo</h3>
+        <div class="input-field">
+          <input type="text" name="title">
+          <label>What should be done?</label>
+        </div>
+        <button type="submit" class="btn">Create</button>
+      </form>
+
+    </div>
+    <script src="/buttonActions.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
